@@ -265,5 +265,5 @@ test('user endpoint returns correct user data', function () {
     $response = $this->getJson('/api/user');
 
     $response->assertOk()
-        ->assertJsonStructure(['id', 'name', 'email', 'created_at', 'updated_at']);
+        ->assertJsonStructure(['id', 'name', 'email', 'role', 'created_at', 'updated_at']);
 });

@@ -64,10 +64,10 @@ test('can search products by name', function () {
         ->assertJsonFragment(['name' => 'iPhone 15 Pro']);
 });
 
-// Store Tests
+// Store Tests (admin only)
 test('can create a product', function () {
-    $user = User::factory()->create();
-    Sanctum::actingAs($user);
+    $admin = User::factory()->admin()->create();
+    Sanctum::actingAs($admin);
 
     $productData = [
         'name' => 'New Product',
@@ -85,8 +85,8 @@ test('can create a product', function () {
 });
 
 test('can create a product with category', function () {
-    $user = User::factory()->create();
-    Sanctum::actingAs($user);
+    $admin = User::factory()->admin()->create();
+    Sanctum::actingAs($admin);
 
     $category = Category::factory()->create();
 
@@ -106,8 +106,8 @@ test('can create a product with category', function () {
 });
 
 test('product name is required', function () {
-    $user = User::factory()->create();
-    Sanctum::actingAs($user);
+    $admin = User::factory()->admin()->create();
+    Sanctum::actingAs($admin);
 
     $this->postJson('/api/products', [
         'price' => 99.99,
@@ -117,8 +117,8 @@ test('product name is required', function () {
 });
 
 test('product price is required', function () {
-    $user = User::factory()->create();
-    Sanctum::actingAs($user);
+    $admin = User::factory()->admin()->create();
+    Sanctum::actingAs($admin);
 
     $this->postJson('/api/products', [
         'name' => 'Test Product',
@@ -128,8 +128,8 @@ test('product price is required', function () {
 });
 
 test('product price must be positive', function () {
-    $user = User::factory()->create();
-    Sanctum::actingAs($user);
+    $admin = User::factory()->admin()->create();
+    Sanctum::actingAs($admin);
 
     $this->postJson('/api/products', [
         'name' => 'Test Product',
@@ -140,8 +140,8 @@ test('product price must be positive', function () {
 });
 
 test('product name must be unique', function () {
-    $user = User::factory()->create();
-    Sanctum::actingAs($user);
+    $admin = User::factory()->admin()->create();
+    Sanctum::actingAs($admin);
 
     Product::factory()->create(['name' => 'Existing Product']);
 
@@ -154,8 +154,8 @@ test('product name must be unique', function () {
 });
 
 test('category_id must exist in categories table', function () {
-    $user = User::factory()->create();
-    Sanctum::actingAs($user);
+    $admin = User::factory()->admin()->create();
+    Sanctum::actingAs($admin);
 
     $this->postJson('/api/products', [
         'name' => 'Test Product',
@@ -186,10 +186,10 @@ test('returns 404 for non-existent product', function () {
         ->assertNotFound();
 });
 
-// Update Tests
+// Update Tests (admin only)
 test('can update a product', function () {
-    $user = User::factory()->create();
-    Sanctum::actingAs($user);
+    $admin = User::factory()->admin()->create();
+    Sanctum::actingAs($admin);
 
     $product = Product::factory()->create(['name' => 'Old Name']);
 
@@ -209,8 +209,8 @@ test('can update a product', function () {
 });
 
 test('can partially update a product', function () {
-    $user = User::factory()->create();
-    Sanctum::actingAs($user);
+    $admin = User::factory()->admin()->create();
+    Sanctum::actingAs($admin);
 
     $product = Product::factory()->create([
         'name' => 'Original Name',
@@ -230,8 +230,8 @@ test('can partially update a product', function () {
 });
 
 test('cannot update product with duplicate name', function () {
-    $user = User::factory()->create();
-    Sanctum::actingAs($user);
+    $admin = User::factory()->admin()->create();
+    Sanctum::actingAs($admin);
 
     Product::factory()->create(['name' => 'Existing Product']);
     $product = Product::factory()->create(['name' => 'My Product']);
@@ -244,8 +244,8 @@ test('cannot update product with duplicate name', function () {
 });
 
 test('can update product with same name', function () {
-    $user = User::factory()->create();
-    Sanctum::actingAs($user);
+    $admin = User::factory()->admin()->create();
+    Sanctum::actingAs($admin);
 
     $product = Product::factory()->create(['name' => 'Same Name']);
 
@@ -256,10 +256,10 @@ test('can update product with same name', function () {
         ->assertOk();
 });
 
-// Delete Tests
+// Delete Tests (admin only)
 test('can delete a product', function () {
-    $user = User::factory()->create();
-    Sanctum::actingAs($user);
+    $admin = User::factory()->admin()->create();
+    Sanctum::actingAs($admin);
 
     $product = Product::factory()->create();
 

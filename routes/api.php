@@ -13,6 +13,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/user', [AuthController::class, 'user']);
 
-    // Products resource routes
-    Route::apiResource('products', ProductController::class)->names('api.products');
+    // Products - read (all authenticated users)
+    Route::get('/products', [ProductController::class, 'index'])->name('api.products.index');
+    Route::get('/products/{product}', [ProductController::class, 'show'])->name('api.products.show');
+
+    // Products - write (admin only)
+    Route::middleware('admin')->group(function () {
+        Route::post('/products', [ProductController::class, 'store'])->name('api.products.store');
+        Route::put('/products/{product}', [ProductController::class, 'update'])->name('api.products.update');
+        Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('api.products.destroy');
+    });
 });

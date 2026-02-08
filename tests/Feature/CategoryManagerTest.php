@@ -9,8 +9,8 @@ test('guest cannot access categories page', function () {
     $this->get('/categories')->assertRedirect('/login');
 });
 
-test('authenticated user can access categories page', function () {
-    $user = User::factory()->create();
+test('admin user can access categories page', function () {
+    $user = User::factory()->admin()->create();
 
     $this->actingAs($user)
         ->get('/categories')
@@ -25,7 +25,7 @@ test('categories can be created via factory', function () {
 });
 
 test('can create a new category', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
 
     Livewire::actingAs($user)
         ->test(CategoryManager::class)
@@ -42,7 +42,7 @@ test('can create a new category', function () {
 });
 
 test('category name is required', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
 
     Livewire::actingAs($user)
         ->test(CategoryManager::class)
@@ -171,7 +171,7 @@ test('can clear filters', function () {
 });
 
 test('opening modal resets form', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
 
     Livewire::actingAs($user)
         ->test(CategoryManager::class)

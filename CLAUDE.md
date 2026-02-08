@@ -59,24 +59,36 @@ php artisan test           # Tests
 ## Estado actual
 
 - Auth completa (Breeze + Livewire): login, register, password reset, profile, logout
+- Roles y permisos: admin/user con middleware `EnsureUserIsAdmin`
+- Dashboard dinámico (Livewire): stats, actividad reciente, acciones rápidas (rol-based)
 - Product CRUD completo (Livewire): crear, leer, editar, eliminar, buscar, paginar, filtros avanzados
-- Category CRUD completo (Livewire): con relación a Products, filtros por estado
-- API REST (Sanctum): /api/products (CRUD completo), /api/register, /api/login, /api/logout, /api/user
-- Exportación Excel: productos con filtros aplicados
-- Rutas Web: `/` (welcome), `/login`, `/register`, `/dashboard` (auth), `/products` (auth), `/categories` (auth), `/profile` (auth)
-- DB: users, products, categories, cache, jobs, sessions
-- Tests: 149 pasando (Pest + PHPUnit)
+- Category CRUD completo (Livewire): con relación a Products, filtros por estado (admin only)
+- API REST (Sanctum): /api/products (read: all auth, write: admin), /api/register, /api/login, /api/logout, /api/user
+- Exportación CSV/Excel: productos y categorías con filtros (admin only)
+- Rutas Web: `/` (welcome), `/login`, `/register`, `/dashboard` (auth), `/products` (auth), `/categories` (admin), `/profile` (auth)
+- DB: users (con role), products, categories, cache, jobs, sessions
+- Tests: 191 pasando (Pest + PHPUnit)
 - Testing framework: Pest con plugin Laravel
-- Cobertura de código: 96.3% total
+- Cobertura de código: 100% total
+
+## Roles
+
+- `admin`: acceso completo (categories, export, API write)
+- `user`: acceso a dashboard, products, profile
+- Middleware: `admin` alias → `EnsureUserIsAdmin`
+- Helper: `$user->isAdmin()` en el modelo User
+- Seeders: admin@example.com (admin), test@example.com (user)
 
 ## Tests
 
 ```bash
-php artisan test                                    # Todos los tests (149)
-php artisan test --filter="ProductManagerTest"      # Tests de ProductManager (37)
+php artisan test                                    # Todos los tests (191)
+php artisan test --filter="DashboardTest"           # Tests de Dashboard (13)
+php artisan test --filter="RoleMiddlewareTest"      # Tests de Roles (20)
+php artisan test --filter="ProductManagerTest"      # Tests de ProductManager (39)
 php artisan test --filter="ProductApiTest"          # Tests de API Products (23)
 php artisan test --filter="AuthApiTest"             # Tests de API Auth (21)
-php artisan test --filter="ExportControllerTest"    # Tests de Export (25)
+php artisan test --filter="ExportControllerTest"    # Tests de Export (28)
 php artisan test --filter="CategoryManagerTest"     # Tests de CategoryManager (17)
 php artisan test --coverage                         # Con cobertura (requiere Xdebug)
 ```
@@ -87,7 +99,7 @@ php artisan test --coverage                         # Con cobertura (requiere Xd
 
 ## Próximos pasos sugeridos
 
-- [ ] Subir cobertura de LoginForm (55.6%) - tests de validación
-- [ ] Subir cobertura de Product Model (50%) - método `formattedPrice()`
-- [ ] Tests para GuestLayout (0%)
-- [ ] Considerar tests E2E con Laravel Dusk
+- [ ] Tests E2E con Laravel Dusk
+- [ ] Más roles (editor, viewer) con permisos granulares
+- [ ] Notificaciones (email on CRUD actions)
+- [ ] Dashboard charts con Chart.js o similar

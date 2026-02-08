@@ -29,7 +29,7 @@ test('guest cannot access categories excel export', function () {
 // ==========================================
 
 test('authenticated user can export products as csv', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     Product::factory()->create(['name' => 'Test Product']);
 
     $response = $this->actingAs($user)
@@ -40,7 +40,7 @@ test('authenticated user can export products as csv', function () {
 });
 
 test('products csv contains correct headers', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     Product::factory()->create();
 
     $response = $this->actingAs($user)
@@ -58,7 +58,7 @@ test('products csv contains correct headers', function () {
 });
 
 test('products csv contains product data', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     $category = Category::factory()->create(['name' => 'Electronics']);
     Product::factory()->create([
         'name' => 'Laptop HP',
@@ -77,7 +77,7 @@ test('products csv contains product data', function () {
 });
 
 test('products csv shows sin categoria for null category', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     Product::factory()->create([
         'name' => 'Uncategorized Product',
         'category_id' => null,
@@ -92,7 +92,7 @@ test('products csv shows sin categoria for null category', function () {
 });
 
 test('products csv filters by search', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     Product::factory()->create(['name' => 'Apple iPhone']);
     Product::factory()->create(['name' => 'Samsung Galaxy']);
 
@@ -106,7 +106,7 @@ test('products csv filters by search', function () {
 });
 
 test('products csv filters by category', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     $cat1 = Category::factory()->create();
     $cat2 = Category::factory()->create();
     Product::factory()->create(['name' => 'Cat1 Product', 'category_id' => $cat1->id]);
@@ -122,7 +122,7 @@ test('products csv filters by category', function () {
 });
 
 test('products csv filters by status', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     Product::factory()->create(['name' => 'Active Product', 'is_active' => true]);
     Product::factory()->create(['name' => 'Inactive Product', 'is_active' => false]);
 
@@ -140,7 +140,7 @@ test('products csv filters by status', function () {
 // ==========================================
 
 test('authenticated user can export products as excel', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     Product::factory()->create();
 
     $response = $this->actingAs($user)
@@ -151,7 +151,7 @@ test('authenticated user can export products as excel', function () {
 });
 
 test('products excel contains html table structure', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     Product::factory()->create(['name' => 'Test Product']);
 
     $response = $this->actingAs($user)
@@ -167,7 +167,7 @@ test('products excel contains html table structure', function () {
 });
 
 test('products excel filters by category', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     $cat1 = Category::factory()->create();
     $cat2 = Category::factory()->create();
     Product::factory()->create(['name' => 'Cat1 Product', 'category_id' => $cat1->id]);
@@ -183,7 +183,7 @@ test('products excel filters by category', function () {
 });
 
 test('products excel filters by status', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     Product::factory()->create(['name' => 'Active Excel', 'is_active' => true]);
     Product::factory()->create(['name' => 'Inactive Excel', 'is_active' => false]);
 
@@ -197,7 +197,7 @@ test('products excel filters by status', function () {
 });
 
 test('products excel filters by search', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     Product::factory()->create(['name' => 'Apple iPhone']);
     Product::factory()->create(['name' => 'Samsung Galaxy']);
 
@@ -215,7 +215,7 @@ test('products excel filters by search', function () {
 // ==========================================
 
 test('authenticated user can export categories as csv', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     Category::factory()->create();
 
     $response = $this->actingAs($user)
@@ -226,7 +226,7 @@ test('authenticated user can export categories as csv', function () {
 });
 
 test('categories csv contains correct headers', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     Category::factory()->create();
 
     $response = $this->actingAs($user)
@@ -243,7 +243,7 @@ test('categories csv contains correct headers', function () {
 });
 
 test('categories csv contains category data', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     Category::factory()->create(['name' => 'Electronics', 'is_active' => true]);
 
     $response = $this->actingAs($user)
@@ -256,7 +256,7 @@ test('categories csv contains category data', function () {
 });
 
 test('categories csv shows product count', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     $category = Category::factory()->create(['name' => 'With Products']);
     Product::factory(3)->create(['category_id' => $category->id]);
 
@@ -270,7 +270,7 @@ test('categories csv shows product count', function () {
 });
 
 test('categories csv filters by search', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     Category::factory()->create(['name' => 'Electronics']);
     Category::factory()->create(['name' => 'Clothing']);
 
@@ -284,7 +284,7 @@ test('categories csv filters by search', function () {
 });
 
 test('categories csv filters by status', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     Category::factory()->create(['name' => 'Active Cat', 'is_active' => true]);
     Category::factory()->create(['name' => 'Inactive Cat', 'is_active' => false]);
 
@@ -302,7 +302,7 @@ test('categories csv filters by status', function () {
 // ==========================================
 
 test('authenticated user can export categories as excel', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     Category::factory()->create();
 
     $response = $this->actingAs($user)
@@ -313,7 +313,7 @@ test('authenticated user can export categories as excel', function () {
 });
 
 test('categories excel contains html table structure', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     Category::factory()->create(['name' => 'Test Category']);
 
     $response = $this->actingAs($user)
@@ -328,7 +328,7 @@ test('categories excel contains html table structure', function () {
 });
 
 test('categories excel filters by status', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     Category::factory()->create(['name' => 'Active Excel Cat', 'is_active' => true]);
     Category::factory()->create(['name' => 'Inactive Excel Cat', 'is_active' => false]);
 
@@ -342,7 +342,7 @@ test('categories excel filters by status', function () {
 });
 
 test('categories excel filters by search', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
     Category::factory()->create(['name' => 'Electronics']);
     Category::factory()->create(['name' => 'Clothing']);
 
@@ -360,7 +360,7 @@ test('categories excel filters by search', function () {
 // ==========================================
 
 test('products csv works with no products', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
 
     $response = $this->actingAs($user)
         ->get('/export/products/csv');
@@ -372,7 +372,7 @@ test('products csv works with no products', function () {
 });
 
 test('categories csv works with no categories', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->admin()->create();
 
     $response = $this->actingAs($user)
         ->get('/export/categories/csv');

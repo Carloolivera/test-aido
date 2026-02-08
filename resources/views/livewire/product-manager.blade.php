@@ -12,15 +12,17 @@
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-200">Gestión de Products</h2>
                 <div class="flex gap-2">
-                    {{-- Export Buttons --}}
-                    <a href="{{ route('export.products.csv', ['search' => $search, 'category_id' => $filterCategory, 'status' => $filterStatus]) }}"
-                        class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm">
-                        CSV
-                    </a>
-                    <a href="{{ route('export.products.excel', ['search' => $search, 'category_id' => $filterCategory, 'status' => $filterStatus]) }}"
-                        class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm">
-                        Excel
-                    </a>
+                    {{-- Export Buttons (admin only) --}}
+                    @if(auth()->user()->isAdmin())
+                        <a href="{{ route('export.products.csv', ['search' => $search, 'category_id' => $filterCategory, 'status' => $filterStatus]) }}"
+                            class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm">
+                            CSV
+                        </a>
+                        <a href="{{ route('export.products.excel', ['search' => $search, 'category_id' => $filterCategory, 'status' => $filterStatus]) }}"
+                            class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm">
+                            Excel
+                        </a>
+                    @endif
                     <button wire:click="openModal" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
                         Crear Product
                     </button>

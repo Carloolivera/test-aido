@@ -1,12 +1,13 @@
 <?php
 
 use App\Http\Controllers\ExportController;
+use App\Livewire\Dashboard;
 use App\Livewire\ProductManager;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome');
 
-Route::view('dashboard', 'dashboard')
+Route::get('dashboard', Dashboard::class)
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
@@ -15,15 +16,15 @@ Route::get('/products', ProductManager::class)
     ->name('products.index');
 
 Route::get('/categories', \App\Livewire\CategoryManager::class)
-    ->middleware(['auth'])
+    ->middleware(['auth', 'admin'])
     ->name('categories.index');
 
 Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
 
-// Export routes
-Route::middleware(['auth'])->group(function () {
+// Export routes - admin only
+Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/export/products/csv', [ExportController::class, 'productsCSV'])->name('export.products.csv');
     Route::get('/export/products/excel', [ExportController::class, 'productsExcel'])->name('export.products.excel');
     Route::get('/export/categories/csv', [ExportController::class, 'categoriesCSV'])->name('export.categories.csv');
