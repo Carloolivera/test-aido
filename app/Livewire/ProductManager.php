@@ -3,9 +3,11 @@
 namespace App\Livewire;
 
 use App\Models\Product;
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
 
+#[Layout('layouts.app')]
 class ProductManager extends Component
 {
     use WithPagination;
@@ -20,9 +22,11 @@ class ProductManager extends Component
     public $showModal = false;
     public $search = '';
 
-    protected $listeners = ['delete'];
+    public $showDeleteModal = false;
+    public $deleteProductId = null;
+    public $deleteProductName = '';
 
-    public function rules()
+public function rules()
     {
         return [
             'name' => 'required|string|max:255|unique:products,name,' . ($this->productId ?? 'NULL'),
@@ -83,12 +87,25 @@ class ProductManager extends Component
 
     public function confirmDelete($id)
     {
-        $this->dispatch('confirm-delete', id: $id);
+        $product = Product::findOrFail($id);
+        $this->deleteProductId = $id;
+        $this->deleteProductName = $product->name;
+        $this->showDeleteModal = true;
     }
 
-    public function delete($id)
+    public function cancelDelete()
     {
-        Product::findOrFail($id)->delete();
+        $this->showDeleteModal = false;
+        $this->deleteProductId = null;
+        $this->deleteProductName = '';
+    }
+
+    public function delete()
+    {
+        Product::findOrFail($this->deleteProductId)->delete();
+        $this->showDeleteModal = false;
+        $this->deleteProductId = null;
+        $this->deleteProductName = '';
         session()->flash('message', 'Product eliminado exitosamente.');
     }
 
