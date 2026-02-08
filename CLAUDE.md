@@ -59,9 +59,35 @@ php artisan test           # Tests
 ## Estado actual
 
 - Auth completa (Breeze + Livewire): login, register, password reset, profile, logout
-- Product CRUD completo (Livewire): crear, leer, editar, eliminar, buscar, paginar
-- Ruta `/products` protegida con middleware `auth`
-- Rutas: `/` (welcome), `/login`, `/register`, `/dashboard` (auth), `/products` (auth), `/profile` (auth)
-- DB: users, products (20 registros seed), cache, jobs, sessions
-- Tests: 26 pasando (auth + base)
-- API: NO configurada aún
+- Product CRUD completo (Livewire): crear, leer, editar, eliminar, buscar, paginar, filtros avanzados
+- Category CRUD completo (Livewire): con relación a Products, filtros por estado
+- API REST (Sanctum): /api/products (CRUD completo), /api/register, /api/login, /api/logout, /api/user
+- Exportación Excel: productos con filtros aplicados
+- Rutas Web: `/` (welcome), `/login`, `/register`, `/dashboard` (auth), `/products` (auth), `/categories` (auth), `/profile` (auth)
+- DB: users, products, categories, cache, jobs, sessions
+- Tests: 149 pasando (Pest + PHPUnit)
+- Testing framework: Pest con plugin Laravel
+- Cobertura de código: 96.3% total
+
+## Tests
+
+```bash
+php artisan test                                    # Todos los tests (149)
+php artisan test --filter="ProductManagerTest"      # Tests de ProductManager (37)
+php artisan test --filter="ProductApiTest"          # Tests de API Products (23)
+php artisan test --filter="AuthApiTest"             # Tests de API Auth (21)
+php artisan test --filter="ExportControllerTest"    # Tests de Export (25)
+php artisan test --filter="CategoryManagerTest"     # Tests de CategoryManager (17)
+php artisan test --coverage                         # Con cobertura (requiere Xdebug)
+```
+
+## Extensiones PHP instaladas
+
+- Xdebug 3.3.1 (modo coverage) - `C:\xampp\php\ext\php_xdebug.dll`
+
+## Próximos pasos sugeridos
+
+- [ ] Subir cobertura de LoginForm (55.6%) - tests de validación
+- [ ] Subir cobertura de Product Model (50%) - método `formattedPrice()`
+- [ ] Tests para GuestLayout (0%)
+- [ ] Considerar tests E2E con Laravel Dusk

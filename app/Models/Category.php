@@ -5,29 +5,28 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Product extends Model
+class Category extends Model
 {
+    /** @use HasFactory<\Database\Factories\CategoryFactory> */
     use HasFactory;
 
     protected $fillable = [
         'name',
         'description',
-        'price',
         'is_active',
-        'category_id',
     ];
 
     protected $casts = [
-        'price' => 'decimal:2',
         'is_active' => 'boolean',
     ];
 
-    // Relationship: A product belongs to a category
-    public function category()
+    // Relationship: A category has many products
+    public function products()
     {
-        return $this->belongsTo(Category::class);
+        return $this->hasMany(Product::class);
     }
 
+    // Scope: Get only active categories
     public function scopeActive($query)
     {
         return $query->where('is_active', true);
