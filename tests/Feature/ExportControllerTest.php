@@ -166,6 +166,36 @@ test('products excel contains html table structure', function () {
     expect($content)->toContain('</html>');
 });
 
+test('products excel filters by category', function () {
+    $user = User::factory()->create();
+    $cat1 = Category::factory()->create();
+    $cat2 = Category::factory()->create();
+    Product::factory()->create(['name' => 'Cat1 Product', 'category_id' => $cat1->id]);
+    Product::factory()->create(['name' => 'Cat2 Product', 'category_id' => $cat2->id]);
+
+    $response = $this->actingAs($user)
+        ->get('/export/products/excel?category_id=' . $cat1->id);
+
+    $content = $response->streamedContent();
+
+    expect($content)->toContain('Cat1 Product');
+    expect($content)->not->toContain('Cat2 Product');
+});
+
+test('products excel filters by status', function () {
+    $user = User::factory()->create();
+    Product::factory()->create(['name' => 'Active Excel', 'is_active' => true]);
+    Product::factory()->create(['name' => 'Inactive Excel', 'is_active' => false]);
+
+    $response = $this->actingAs($user)
+        ->get('/export/products/excel?status=1');
+
+    $content = $response->streamedContent();
+
+    expect($content)->toContain('Active Excel');
+    expect($content)->not->toContain('Inactive Excel');
+});
+
 test('products excel filters by search', function () {
     $user = User::factory()->create();
     Product::factory()->create(['name' => 'Apple iPhone']);
@@ -295,6 +325,20 @@ test('categories excel contains html table structure', function () {
     expect($content)->toContain('<table');
     expect($content)->toContain('Test Category');
     expect($content)->toContain('</table>');
+});
+
+test('categories excel filters by status', function () {
+    $user = User::factory()->create();
+    Category::factory()->create(['name' => 'Active Excel Cat', 'is_active' => true]);
+    Category::factory()->create(['name' => 'Inactive Excel Cat', 'is_active' => false]);
+
+    $response = $this->actingAs($user)
+        ->get('/export/categories/excel?status=0');
+
+    $content = $response->streamedContent();
+
+    expect($content)->toContain('Inactive Excel Cat');
+    expect($content)->not->toContain('Active Excel Cat');
 });
 
 test('categories excel filters by search', function () {

@@ -4,6 +4,7 @@ namespace Tests\Feature\Auth;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\RateLimiter;
 use Livewire\Volt\Volt;
 use Tests\TestCase;
 
@@ -65,6 +66,29 @@ class AuthenticationTest extends TestCase
         $response
             ->assertOk()
             ->assertSeeVolt('layout.navigation');
+    }
+
+    public function test_login_is_rate_limited_after_too_many_attempts(): void
+    {
+        $user = User::factory()->create();
+
+        // Make 5 failed attempts to hit the rate limiter
+        for ($i = 0; $i < 5; $i++) {
+            Volt::test('pages.auth.login')
+                ->set('form.email', $user->email)
+                ->set('form.password', 'wrong-password')
+                ->call('login');
+        }
+
+        // 6th attempt should trigger rate limiting
+        $component = Volt::test('pages.auth.login')
+            ->set('form.email', $user->email)
+            ->set('form.password', 'wrong-password')
+            ->call('login');
+
+        $component->assertHasErrors('form.email');
+
+        $this->assertGuest();
     }
 
     public function test_users_can_logout(): void

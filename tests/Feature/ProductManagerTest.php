@@ -523,3 +523,25 @@ test('filter status calls resetPage', function () {
         ->set('filterStatus', '1')
         ->assertHasNoErrors();
 });
+
+// ==========================================
+// SCOPE TESTS
+// ==========================================
+
+test('guest layout can be rendered', function () {
+    $component = new \App\View\Components\GuestLayout();
+    $view = $component->render();
+
+    expect($view->getName())->toBe('layouts.guest');
+});
+
+test('scope active returns only active products', function () {
+    Product::factory()->create(['name' => 'Active One', 'is_active' => true]);
+    Product::factory()->create(['name' => 'Inactive One', 'is_active' => false]);
+    Product::factory()->create(['name' => 'Active Two', 'is_active' => true]);
+
+    $activeProducts = Product::active()->get();
+
+    expect($activeProducts)->toHaveCount(2);
+    expect($activeProducts->pluck('name')->toArray())->each->toContain('Active');
+});
