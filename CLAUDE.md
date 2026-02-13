@@ -1,5 +1,13 @@
 # CLAUDE.md - test-aido
 
+## Session Init
+
+Al inicio de cada sesion automaticamente:
+1. Lee el ultimo session log en `C:\DEV\.aido-system\context\active\`
+2. Lee este CLAUDE.md completo
+3. Reporta: cantidad de tests, coverage, y ultima feature completada
+4. Pregunta en que quiero trabajar hoy
+
 ## Proyecto
 
 Proyecto de prueba del sistema AIDO. Valida que workflows, skills y agents funcionen correctamente.
@@ -96,6 +104,24 @@ php artisan test --coverage                         # Con cobertura (requiere Xd
 ## Extensiones PHP instaladas
 
 - Xdebug 3.3.1 (modo coverage) - `C:\xampp\php\ext\php_xdebug.dll`
+
+## Skills AIDO disponibles
+
+Usar cuando se necesite seguir un proceso paso a paso:
+- **CRUD**: `C:\DEV\.aido-system\skills\laravel-crud-generator.md`
+- **Auth**: `C:\DEV\.aido-system\skills\laravel-auth-setup.md`
+- **API REST**: `C:\DEV\.aido-system\skills\laravel-api-rest.md`
+- **Testing**: `C:\DEV\.aido-system\skills\laravel-testing.md`
+- **Deploy Hostinger**: `C:\DEV\.aido-system\skills\laravel-deploy-hostinger.md`
+- **Export CSV/Excel**: `C:\DEV\.aido-system\skills\laravel-export-csv-excel.md`
+- **Roles/Permisos**: `C:\DEV\.aido-system\skills\laravel-roles-permissions.md`
+
+## Slash Commands
+
+- `/crud [Modelo campo1:tipo campo2:tipo]` - Genera CRUD completo siguiendo skill AIDO
+- `/test-coverage` - Analiza coverage y sugiere tests faltantes
+- `/handoff` - Genera documento de handoff para cambiar de IA
+- `/deploy-check` - Checklist pre-deploy para Hostinger
 
 ## Próximos pasos sugeridos
 
